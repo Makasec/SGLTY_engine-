@@ -1,0 +1,4 @@
+psutil==7.1.2
+setuptools==80.9.0
+uvloop==0.22.1
+xxhash==3.6.0
