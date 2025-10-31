@@ -1,25 +1,30 @@
-# config.py — central knobs
+"""
+config.py — Singularity Engine Core Configuration
+"""
 
-HOST = "127.0.0.1"
-PORTS = [9001, 9002, 9003, 9004, 9005, 9006]
+# Target file to send
+TEST_FILE = "thorn_massive.log"
 
-# Shard / framing
-SHARD_SIZE_BYTES = 4 * 1024 * 1024
-FRAME_LEN_BYTES  = 4                      # uint32 BE length prefix
+# Network / Ports
+SEND_PORTS = [9001, 9002, 9003, 9004, 9005, 9006]
+RECV_PORT  = [9001, 9002, 9003, 9004, 9005, 9006]
+HOST_IP    = "127.0.0.1"
 
-# Sender batching
-DRAIN_BATCH_BYTES = 16 * 1024 * 1024
+# Sharding Parameters
+SHARD_SIZE_BYTES  = 4 * 1024 * 1024     # 4 MiB per shard
+HEADER_SIZE_BYTES = 64                  # Fixed header size from shrdng_snglrty.py
+FRAME_LEN_BYTES   = 4                   # Optional framing length (legacy streams)
 
-# Files
-FILE_PATH   = "thorn_massive.log"        # input to send
-OUTPUT_PATH = "thorn_recv_test.bin"      # optional receiver sink
+# Sender batching / flow control
+DRAIN_BATCH_BYTES = 16 * 1024 * 1024    # Flush every 16 MiB per lane
 
-# Receiver behavior
-RECEIVER_WRITE_TO_DISK = False           # True to write, False to count only
+# Identifiers
+MAGIC_TAG = "SLGTY"
+VERSION    = 1
 
-# Event loop
-USE_UVLOOP = True
+RECEIVER_WRITE_TO_DISK = False
+OUTPUT_PATH = "thorn_recv_test.bin"
 
-# Socket buffers (kernel)
-SO_SNDBUF = 4 * 1024 * 1024
-SO_RCVBUF = 4 * 1024 * 1024
+SO_SNDBUF = 8 * 1024 * 1024
+SO_RCVBUF = 8 * 1024 * 1024
+
